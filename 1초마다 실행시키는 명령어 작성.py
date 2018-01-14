@@ -6,37 +6,36 @@ t.seth(b)
 t.fd(250)
 t.ht()
 
-a = t.Turtle()
-a.seth(b)
-a.ht()
-a.speed(1000)
-a.pensize(3)
-a.color('black')
-
 def f(degree):
-    
-    t.pensize(5)
-    t.color('white')
-    t.back(250)
     t.pensize(3)
     t.color('black')
     t.seth(degree)
     t.fd(250)
+    t.clear()
+    t.reset()
+
+def drawMinute(degree):
+    newMinute = t.Turtle()
+    newMinute.ht()
+    newMinute.speed(1000)
+    newMinute.color('black')
+    newMinute.seth(b - degree)
+    newMinute.fd(200)
+    newMinute.back(200)
+    return newMinute
+
+y = 0
+newMinute = None
+for x in range(0,1000):
+    if x % 10 == 0:
+        if newMinute != None:
+            newMinute.clear()
+            newMinute.reset()
+        newMinute = drawMinute(6 * y)
+        y = y + 1
 
 
-
-for x in range(1,61):
-    if x == 60:
-        a.color('black')
-        a.seth(b - 6)
-        a.fd(200)
-        a.back(200)
-    else:
-        a.color('black')
-        a.fd(200)
-        a.back(200)
-
-    t.ontimer(f(90 - x * 6), 1000)
+    t.ontimer(f(90 - x * 6), 10)
 
        
         
