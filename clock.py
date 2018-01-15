@@ -14,16 +14,19 @@ cir.circle(300)
 cir.pensize(3)
 cir.color('white')
 
-def drawline(pikachu):
+def drawline(pikachu, pichu):
     cir.goto(0,0)
     cir.seth(b - pikachu)
     cir.fd(300)
     cir.color('black')
-    cir.back(20)
+    cir.back(pichu)
     cir.color('white')
-for h in range(0,60):
-    drawline(h * 6)
-    
+for h in range(1,61):
+    if h % 5 == 0:
+        drawline(h * 6, 30)
+    else:
+        drawline(h * 6, 20)
+
 
 def f(degree):
     t.clear()
