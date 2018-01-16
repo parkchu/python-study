@@ -67,6 +67,7 @@ def drawhour(pikachu):
     hour.fd(150)
     hour.back(150)
     return hour
+
 c = 1000
 a = 100
 y = 0
@@ -75,19 +76,14 @@ hour = None
 newMinute = None
 while True:
     for x in range(0,3600):
-        import time
         chu = time.gmtime(time.time())
-        if chu.tm_sec <= c:
-            import time
-            chu = time.gmtime(time.time())
-            c = 0
-            if newMinute != None:
+        
+           if newMinute != None:
                 newMinute.clear()
                 newMinute.reset()
             newMinute = drawMinute(6 * chu.tm_min)
             y = y + 1
             if chu.tm_min <= a:
-                import time
                 chu = time.gmtime(time.time())
                 a = 0
                 if hour != None:
