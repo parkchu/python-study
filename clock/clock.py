@@ -77,8 +77,10 @@ newMinute = None
 while True:
     for x in range(0,3600):
         chu = time.gmtime(time.time())
-        
-           if newMinute != None:
+        if chu.tm_sec <= c:
+            chu = time.gmtime(time.time())
+            c = 0
+            if newMinute != None:
                 newMinute.clear()
                 newMinute.reset()
             newMinute = drawMinute(6 * chu.tm_min)
