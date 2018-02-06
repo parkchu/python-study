@@ -1,8 +1,6 @@
 import turtle as t
 import time
 
-chu = time.gmtime(time.time())
-
 t.speed(1000)
 t.pensize(1)
 b = 90
@@ -72,18 +70,27 @@ c = 1000
 a = 100
 y = 0
 k = 0
+
 hour = None
 newMinute = None
 while True:
     for x in range(0,3600):
         chu = time.gmtime(time.time())
+<<<<<<< HEAD:clock/clock.py
         if chu.tm_sec <= c:
             chu = time.gmtime(time.time())
             c = 0
+=======
+
+        if chu.tm_sec <= c:
+            c = 0
+
+>>>>>>> a2dc8535a89335de39fa7b52acf3a0fc494eedd2:clock.py
             if newMinute != None:
                 newMinute.clear()
                 newMinute.reset()
             newMinute = drawMinute(6 * chu.tm_min)
+
             y = y + 1
             if chu.tm_min <= a:
                 chu = time.gmtime(time.time())
