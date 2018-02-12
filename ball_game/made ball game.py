@@ -1,14 +1,26 @@
 import pygame, sys
 from random import *
 
+pygame.init()
+
 class Ball(pygame.sprite.Sprite):
-    def __init__(self, image_file, speed, location):
+    def __init__(self, speed, location, conflictCount):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(image_file)
+        self.conflictCount = conflictCount
+        self.image = pygame.image.load(self.load_images())
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
         self.speed = speed
 
+    def load_images(self):
+        if self.conflictCount == 1:
+            return 'gray.png'
+        elif self.conflictCount == 2:
+            return 'black.png'
+        else:
+            return 'pikachu.png'
+        
+        
     def move(self):
         self.rect = self.rect.move(self.speed)
         if self.rect.left < 0 or self.rect.right > 640:
@@ -16,21 +28,51 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.top < 0 or self.rect.bottom > 480:
             self.speed[1] = - self.speed[1]
 
-def animate(group, graygroup):
+    def conflict(self):
+        self.conflictCount = self.conflictCount - 1
+        self.image = pygame.image.load(self.load_images())
+
+        
+    
+    def isEnd(self):
+        if self.conflictCount == 0:
+            return True
+        else:
+            return False
+        
+            
+class anotherBall(pygame.sprite.Sprite):
+    def __init__(self, image_file, speed, location):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(image_file)
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = location
+        self.speed = speed
+        
+    def move(self):
+        self.rect = self.rect.move(self.speed)
+        if self.rect.left < 0 or self.rect.right > 640:
+            self.speed[0] = - self.speed[0]
+        if self.rect.top < 0 or self.rect.bottom > 480:
+            self.speed[1] = - self.speed[1]
+
+def animate(group):
     pikachu.move()
     screen.blit(pikachu.image, pikachu.rect)
 
     joohanball.move()
     screen.blit(joohanball.image, joohanball.rect)
 
-    for grayball in graygroup:
-        grayball.move
-    for grayball in graygroup:
-        screen.blit(grayball.image, grayball.rect)
+
     for ball in group:
         ball.move()
+
+
+        
     for ball in group:
         screen.blit(ball.image, ball.rect)
+
+
 
     pygame.display.flip()
     pygame.time.delay(20)
@@ -43,36 +85,29 @@ screen.fill([255,255,255])
 
 speed = [0, 0]
 location = 320, 380
-pikachu = Ball('pikachu.png', speed, location)
+pikachu = anotherBall('pikachu.png', speed, location)
 screen.blit(pikachu.image, pikachu.rect)
 
 speed = [10,5]
 location = 0,170
-joohanball = Ball('ball.png', speed, location)
+joohanball = anotherBall('ball.png', speed, location)
 screen.blit(joohanball.image, joohanball.rect)
 group = pygame.sprite.Group()
-graygroup = pygame.sprite.Group()
-b = 0
+
 
 for x in range(2):
     for y in range(7):
         a = randint(0, 1)
-        
+        speed = [0,0]
         if a == 0:
-            location = [90 * y + 12, 80 * x + 12]
-            speed = [0, 0]
-            grayball = Ball('gray.png', speed, location)
-            screen.blit(grayball.image, grayball.rect)
-            graygroup.add(grayball)
-
+            conflictCount = randint(1,2)
             location = [90 * y + 10, 80 * x + 10]
-            ball = Ball('black.png', speed, location)
+ 
+                
+            ball = Ball(speed, location, conflictCount)
             screen.blit(ball.image, ball.rect)
 
             group.add(ball)
-            
-            b = b + 1
-
 
 pygame.display.flip()
 
@@ -84,27 +119,33 @@ while True:
         elif  event.type == pygame.MOUSEMOTION:
             pikachu.rect.centerx = event.pos[0]
               
-    animate(group, graygroup)
+    animate(group)
     
     
     if pygame.sprite.collide_rect(joohanball, pikachu):
         joohanball.speed[1] = - joohanball.speed[1]
 
-    if b > 0:
-
-        for ball in group:
-            if pygame.sprite.collide_rect(joohanball, ball):
+    for ball in group:
+        if pygame.sprite.collide_rect(joohanball, ball):
+            ball.conflict()
+            
+            
+            if ball.isEnd():
                 group.remove(ball)
-                joohanball.speed[0] = - joohanball.speed[0]
-                joohanball.speed[1] = - joohanball.speed[1]
-                b = b - 1
-    
-    
-    for grayball in graygroup:
-        if pygame.sprite.collide_rect(joohanball, grayball):
-            graygroup.remove(grayball)
+                
+                
+            
             joohanball.speed[0] = - joohanball.speed[0]
             joohanball.speed[1] = - joohanball.speed[1]
+
+
+
+                
+            
+            
+
+            
+
             
 
                 
