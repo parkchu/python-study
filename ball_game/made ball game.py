@@ -4,10 +4,13 @@ from random import *
 pygame.init()
 
 class Ball(pygame.sprite.Sprite):
-    def __init__(self, speed, location, conflictCount):
+    def __init__(self, speed, location, conflictCount = None, image_file = None):
         pygame.sprite.Sprite.__init__(self)
         self.conflictCount = conflictCount
-        self.image = pygame.image.load(self.load_images())
+        if image_file == None:
+            self.image = pygame.image.load(self.load_images())
+        else:
+            self.image = pygame.image.load(image_file)
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
         self.speed = speed
@@ -40,21 +43,7 @@ class Ball(pygame.sprite.Sprite):
         else:
             return False
         
-            
-class anotherBall(pygame.sprite.Sprite):
-    def __init__(self, image_file, speed, location):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(image_file)
-        self.rect = self.image.get_rect()
-        self.rect.left, self.rect.top = location
-        self.speed = speed
         
-    def move(self):
-        self.rect = self.rect.move(self.speed)
-        if self.rect.left < 0 or self.rect.right > 640:
-            self.speed[0] = - self.speed[0]
-        if self.rect.top < 0 or self.rect.bottom > 480:
-            self.speed[1] = - self.speed[1]
 
 def animate(group):
     pikachu.move()
@@ -85,12 +74,12 @@ screen.fill([255,255,255])
 
 speed = [0, 0]
 location = 320, 380
-pikachu = anotherBall('pikachu.png', speed, location)
+pikachu = Ball( speed, location, 0 ,'pikachu.png')
 screen.blit(pikachu.image, pikachu.rect)
 
 speed = [10,5]
 location = 0,170
-joohanball = anotherBall('ball.png', speed, location)
+joohanball = Ball(speed, location, 0 ,'ball.png')
 screen.blit(joohanball.image, joohanball.rect)
 group = pygame.sprite.Group()
 
