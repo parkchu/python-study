@@ -31,8 +31,8 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.top < 0:
             self.speed[1] = - self.speed[1]
         if self.rect.bottom > 480:
-            print('game over')
- #           sys.exit()
+            self.speed[1] = self.speed[1] * 0
+
             
     def conflict(self):
         self.conflictCount = self.conflictCount - 1
@@ -49,11 +49,15 @@ class Ball(pygame.sprite.Sprite):
         
 
 def animate(group):
+    white.move()
+    screen.blit(white.image, white.rect)
+
     pikachu.move()
     screen.blit(pikachu.image, pikachu.rect)
 
     joohanball.move()
     screen.blit(joohanball.image, joohanball.rect)
+
 
 
     for ball in group:
@@ -103,17 +107,25 @@ def pikachuball():
     return pikachu
 
 def joohanball():
-    speed = [10,5]
+    speed = [4,2]
     location = 0,170
     joohanball = Ball(speed, location, 0 ,'ball.png')
     screen.blit(joohanball.image, joohanball.rect)
     return joohanball
+
+def white():
+    speed = [0,0]
+    location = 0, 320
+    white = Ball(speed, location, 0, 'white.png')
+    screen.blit(white.image, white.rect)
+    return white
 
 pygame.init()
 screen = pygame.display.set_mode([640,480])
 group = pygame.sprite.Group()
 pikachu = pikachuball()
 joohanball = joohanball()
+white = white()
 c = ballgroup(group)
 pygame.key.set_repeat(100, 50)
 while True:
@@ -127,18 +139,18 @@ while True:
             if event.key == pygame.K_LEFT:
                 pikachu.rect.centerx = pikachu.rect.centerx - 10
             if event.key == pygame.K_SPACE:
-                pikachu.rect = pikachu.rect.move(pikachu.speed)
                 pikachu.speed[1] = pikachu.speed[1] - 5
-                if pikachu.rect.top == 360:
-                    pikachu.speed[1] = pikachu.speed[1] + 10
-                    if pikachu.rect.bottom == 380:
-                        pikachu.speed[1] = pikachu.speed[1] -5
-                
+
+
                 
               
     animate(group)
-    
-    
+
+    #if joohanball.rect.bottom > 480:
+
+    if pygame.sprite.collide_rect(pikachu, white):
+        pikachu.speed[1] = pikachu.speed[1] + 10
+
     if pygame.sprite.collide_rect(joohanball, pikachu):
         joohanball.speed[1] = - joohanball.speed[1]
 
