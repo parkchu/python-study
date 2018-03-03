@@ -38,15 +38,15 @@ location = 1034/2 - 25, 650 - 315
 stickhead = Pikachu(speed, location, 'sticktop.png')
 
 speed = [0,0]
-location = 100, 625 - 240
+location = 100, 625 - 200
 left = Pikachu(speed, location, 'leftpikachu.png')
 
 speed = [0,0]
-location = 1034 - 242, 625 - 240
+location = 1034 - 242, 625 - 200
 right = Pikachu(speed, location, 'rightpikachu.png')
 
 speed = [0,0]
-location = 0, 625 - 500
+location = 0, 625 - 480
 jump = Pikachu(speed, location, 'jump.png')
 
 speed = [0, 5]
@@ -58,14 +58,16 @@ screen.blit(stick.image, stick.rect)
 screen.blit(left.image, left.rect)
 screen.blit(right.image, right.rect)
 screen.blit(jump.image, jump.rect)
-screen.blit(monsterball.image, monsterball.rect)
 screen.blit(stickhead.image, stickhead.rect)
+screen.blit(monsterball.image, monsterball.rect)
 
 pygame.display.flip()
 delay = 100
 interval = 50
 pygame.key.set_repeat(delay, interval)
 joohan = 1
+pikachu = 1
+abc = 1
 
 while True:
     screen.blit(background.image, background.rect)
@@ -135,22 +137,49 @@ while True:
         left.speed[1] = 10
 
     if pygame.sprite.collide_rect(monsterball, left):
-        monsterball.speed[1] = - monsterball.speed[1]
+
+        if pikachu == 1:
+
+            monsterball.speed[1] = - monsterball.speed[1]
+
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                monsterball.speed[0] = monsterball.speed[0] - 1
-            if event.key == pygame.K_d:
-                monsterball.speed[0] = monsterball.speed[0] + 1
+
+            if event.key == pygame.K_t:
+                monsterball.speed[0] = 15
+                monsterball.speed[1] = 5
+                pikachu = 0
+            if event.key == pygame.K_y:
+                monsterball.speed[0] = 5
+                monsterball.speed[1] = 15
+                pikachu = 0
+            if event.key == pygame.K_u:
+                monsterball.speed[0] = 10
+                monsterball.speed[1] = -10
+                pikachu = 0
+
 
         joohan = 0
 
     if pygame.sprite.collide_rect(monsterball, right):
-        monsterball.speed[1] = - monsterball.speed[1]
+
+        if abc == 1:
+
+            monsterball.speed[1] = - monsterball.speed[1]
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                monsterball.speed[0] = monsterball.speed[0] - 1
-            if event.key == pygame.K_RIGHT:
-                monsterball.speed[0] = monsterball.speed[0] + 1
+
+            if event.key == pygame.K_b:
+                monsterball.speed[0] = - 15
+                monsterball.speed[1] = 5
+                abc = 0
+            if event.key == pygame.K_n:
+                monsterball.speed[0] = - 5
+                monsterball.speed[1] = 15
+                abc = 0
+            if event.key == pygame.K_m:
+                monsterball.speed[0] = - 10
+                monsterball.speed[1] = -10
+                abc = 0
+
 
         joohan = 0
 
