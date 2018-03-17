@@ -59,15 +59,20 @@ leftscore = Pikachu(speed, location, 'leftscore.png')
 location = 1034/2 , 625 - 67
 rightscore = Pikachu(speed, location, "rightscore.png")
 
-score0 = draw([0,0], (0, 0), 'score.png')
+rsco0 = draw([0,0], (0, 0), 'score.png')
 rsco1 = draw([0,0], (0,0), 'score1.png')
 rsco2 = draw([0,0], (0,0), 'score2.png')
 rsco3 = draw([0,0], (0,0), 'score3.png')
-lscore0 = draw([0,0], (1034 - 100, 0), 'score.png')
+lsco0 = draw([0,0], (1034 - 100, 0), 'score.png')
 lsco1 = draw([0,0], (1034 - 100, 0), 'score1.png')
 lsco2 = draw([0,0], (1034 - 100, 0), 'score2.png')
 lsco3 = draw([0,0], (1034 - 100, 0), 'score3.png')
 
+restart = draw([0,0], (200, 400), 'restart.png')
+end = draw([0,0], (1034 - 350, 400), 'end.png')
+leftwin = draw([0,0], (1034/2 - 125, 200), 'leftwin.png')
+rightwin = draw([0,0], (1034/2 - 125, 200), 'rightwin.png')
+mouse = draw([0,0], (20000, 2000000), 'mouse.png')
 
 pygame.init()
 screen = pygame.display.set_mode([1034,625])
@@ -77,8 +82,6 @@ screen.blit(background.image, background.rect)
 screen.blit(stick.image, stick.rect)
 screen.blit(leftscore.image, leftscore.rect)
 screen.blit(rightscore.image, rightscore.rect)
-screen.blit(score0.image, score0.rect)
-screen.blit(lscore0.image, lscore0.rect)
 screen.blit(left.image, left.rect)
 screen.blit(right.image, right.rect)
 screen.blit(jump.image, jump.rect)
@@ -87,6 +90,8 @@ screen.blit(monsterball.image, monsterball.rect)
 
 
 pygame.display.flip()
+pygame.mixer.init()
+
 delay = 100
 interval = 50
 pygame.key.set_repeat(delay, interval)
@@ -95,38 +100,61 @@ pikachu = 1
 abc = 1
 rig = 0
 lef = 0
+score = [rsco0, rsco1, rsco2, rsco3]
+score2 = [lsco0, lsco1, lsco2, lsco3]
+pika = True
 
 while True:
+    if pika:
+        screen.blit(background.image, background.rect)
+        screen.blit(stick.image, stick.rect)
+        screen.blit(stickhead.image, stickhead.rect)
+        screen.blit(leftscore.image, leftscore.rect)
+        screen.blit(rightscore.image, rightscore.rect)
+        a = right.move()
+        b = left.move()
+        monsterball.move()
 
-    screen.blit(background.image, background.rect)
-    screen.blit(stick.image, stick.rect)
-    screen.blit(stickhead.image, stickhead.rect)
-    screen.blit(leftscore.image, leftscore.rect)
-    screen.blit(rightscore.image, rightscore.rect)
+        for x in range(3):
+            rscore = score[rig]
+            lscore = score2[lef]
+            screen.blit(rscore.image, rscore.rect)
+            screen.blit(lscore.image, lscore.rect)
 
-
-    if rig == 0:
-        screen.blit(score0.image, score0.rect)
-    if rig == 1:
-        screen.blit(rsco1.image, rsco1.rect)
-    if rig == 2:
-        screen.blit(rsco2.image, rsco2.rect)
-    if rig == 3:
-        screen.blit(rsco3.image, rsco3.rect)
-    if lef == 0:
-        screen.blit(lscore0.image, lscore0.rect)
-    if lef == 1:
-        screen.blit(lsco1.image, lsco1.rect)
-    if lef == 2:
-        screen.blit(lsco2.image, lsco2.rect)
-    if lef == 3:
-        screen.blit(lsco3.image, lsco3.rect)
-
-
-    a = right.move()
-    b = left.move()
-    monsterball.move()
     for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse.rect.center = event.pos
+            screen.blit(mouse.image, mouse.rect)
+            if pygame.sprite.collide_rect(mouse, restart):
+                pygame.init()
+                screen = pygame.display.set_mode([1034, 625])
+                screen.fill([255, 255, 255])
+
+                screen.blit(background.image, background.rect)
+                screen.blit(stick.image, stick.rect)
+                screen.blit(leftscore.image, leftscore.rect)
+                screen.blit(rightscore.image, rightscore.rect)
+                screen.blit(left.image, left.rect)
+                screen.blit(right.image, right.rect)
+                screen.blit(jump.image, jump.rect)
+                screen.blit(stickhead.image, stickhead.rect)
+                screen.blit(monsterball.image, monsterball.rect)
+
+                pygame.display.flip()
+                delay = 100
+                interval = 50
+                pygame.key.set_repeat(delay, interval)
+                joohan = 1
+                pikachu = 1
+                abc = 1
+                rig = 0
+                lef = 0
+                score = [rsco0, rsco1, rsco2, rsco3]
+                score2 = [lsco0, lsco1, lsco2, lsco3]
+                pika = True
+
+            if pygame.sprite.collide_rect(mouse, end):
+                sys.exit()
         if event.type == pygame.QUIT:
             sys.exit()
         if event.type == pygame.KEYDOWN:
@@ -200,14 +228,20 @@ while True:
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_t:
+                pygame.mixer.music.load('pikachusound.mp3')
+                pygame.mixer.music.play()
                 monsterball.speed[0] = 15
                 monsterball.speed[1] = 5
                 pikachu = 0
             if event.key == pygame.K_y:
+                pygame.mixer.music.load('pikachusound.mp3')
+                pygame.mixer.music.play()
                 monsterball.speed[0] = 5
                 monsterball.speed[1] = 15
                 pikachu = 0
             if event.key == pygame.K_u:
+                pygame.mixer.music.load('pikachusound.mp3')
+                pygame.mixer.music.play()
                 monsterball.speed[0] = 10
                 monsterball.speed[1] = -10
                 pikachu = 0
@@ -224,14 +258,20 @@ while True:
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_i:
+                pygame.mixer.music.load('pikachusound.mp3')
+                pygame.mixer.music.play()
                 monsterball.speed[0] = - 15
                 monsterball.speed[1] = 5
                 abc = 0
             if event.key == pygame.K_o:
+                pygame.mixer.music.load('pikachusound.mp3')
+                pygame.mixer.music.play()
                 monsterball.speed[0] = - 5
                 monsterball.speed[1] = 15
                 abc = 0
             if event.key == pygame.K_p:
+                pygame.mixer.music.load('pikachusound.mp3')
+                pygame.mixer.music.play()
                 monsterball.speed[0] = - 10
                 monsterball.speed[1] = -10
                 abc = 0
@@ -256,13 +296,21 @@ while True:
         pygame.display.flip()
         joohan = 1
 
-    right.move()
-    left.move()
-    monsterball.move()
-    screen.blit(monsterball.image, monsterball.rect)
-
-    screen.blit(right.image, right.rect)
-    screen.blit(left.image, left.rect)
-    pygame.display.flip()
-
-
+    if pika:
+        right.move()
+        left.move()
+        monsterball.move()
+        screen.blit(monsterball.image, monsterball.rect)
+        screen.blit(right.image, right.rect)
+        screen.blit(left.image, left.rect)
+        pygame.display.flip()
+    if rig == 3 or lef == 3:
+        pika = False
+        screen.fill([255,255,255])
+        screen.blit(restart.image, restart.rect)
+        screen.blit(end.image, end.rect)
+        if lef == 3:
+            screen.blit(rightwin.image, rightwin.rect)
+        if rig == 3:
+            screen.blit(leftwin.image, leftwin.rect)
+        pygame.display.flip()
