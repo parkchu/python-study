@@ -37,11 +37,11 @@ location = 1034/2 - 25, 650 - 315
 stickhead = Pikachu(speed, location, 'sticktop.png')
 
 speed = [0,0]
-location = 100, 625 - 220
+location = 100, 625 - 234
 left = Pikachu(speed, location, 'leftpikachu.png')
 
 speed = [0,0]
-location = 1034 - 242, 625 - 220
+location = 1034 - 242, 625 - 234
 right = Pikachu(speed, location, 'rightpikachu.png')
 
 speed = [0,0]
@@ -103,6 +103,7 @@ lef = 0
 score = [rsco0, rsco1, rsco2, rsco3]
 score2 = [lsco0, lsco1, lsco2, lsco3]
 pika = True
+pygame.mixer.music.load('pikachusound.mp3')
 
 while True:
     if pika:
@@ -228,19 +229,16 @@ while True:
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_t:
-                pygame.mixer.music.load('pikachusound.mp3')
                 pygame.mixer.music.play()
                 monsterball.speed[0] = 15
                 monsterball.speed[1] = 5
                 pikachu = 0
             if event.key == pygame.K_y:
-                pygame.mixer.music.load('pikachusound.mp3')
                 pygame.mixer.music.play()
                 monsterball.speed[0] = 5
                 monsterball.speed[1] = 15
                 pikachu = 0
             if event.key == pygame.K_u:
-                pygame.mixer.music.load('pikachusound.mp3')
                 pygame.mixer.music.play()
                 monsterball.speed[0] = 10
                 monsterball.speed[1] = -10
@@ -258,19 +256,16 @@ while True:
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_i:
-                pygame.mixer.music.load('pikachusound.mp3')
                 pygame.mixer.music.play()
                 monsterball.speed[0] = - 15
                 monsterball.speed[1] = 5
                 abc = 0
             if event.key == pygame.K_o:
-                pygame.mixer.music.load('pikachusound.mp3')
                 pygame.mixer.music.play()
                 monsterball.speed[0] = - 5
                 monsterball.speed[1] = 15
                 abc = 0
             if event.key == pygame.K_p:
-                pygame.mixer.music.load('pikachusound.mp3')
                 pygame.mixer.music.play()
                 monsterball.speed[0] = - 10
                 monsterball.speed[1] = -10
